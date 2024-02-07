@@ -24,11 +24,6 @@ import { useRef,useState } from "react"; // import useCallback
         setInterval(()=>{
             detect(net)
         },200)
-
-        setInterval(()=>{
-            setHeartRate((val >= heartRate+4 || val<=heartRate-3 ) ? val : heartRate)
-            console.log(heartRate);
-        },2000)
     }
 
     const beat = ()=>{
@@ -40,6 +35,7 @@ import { useRef,useState } from "react"; // import useCallback
             val+=elem
             // console.log(val)
         }
+        (val >= heartRate+4 || val<=heartRate-3 ) && setHeartRate(val)
     }
             
 
