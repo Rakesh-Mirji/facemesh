@@ -2642,14 +2642,6 @@ export const TRIANGULATION = [
     255,
   ];
   
-
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-  }
-  
-  getRandomInt(4)
-
-  // let colorArr=[["white","aqua"],["#FDDB27FF","#00B1D2FF"],['#FFD662FF',"#00539CFF"],["#0063B2FF","#9CC3D5FF"]]
   // Triangle drawing method
   const drawPath = (ctx, points, closePath) => {
     const region = new Path2D();

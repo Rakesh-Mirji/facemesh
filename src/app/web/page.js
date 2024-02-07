@@ -4,22 +4,44 @@ import * as tf from "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/facemesh";
 import { drawMesh } from "./utilities";
 
-import { useRef } from "react"; // import useCallback
+import { useRef,useState } from "react"; // import useCallback
 
-  const App = () => {
-    const webcamRef = useRef(null);
-    const canvasRef = useRef(null);
-  
+  const Cam = () => {
+      
+      const webcamRef = useRef(null);
+      const canvasRef = useRef(null);
+      const min = 57
+      const max = 82
+      let val = (max+min)/2
+      
+      const[heartRate,setHeartRate]= useState(0)
+      
     // Load facemesh 
     const runFacemesh =async()=>{
-        const net = await  facemesh.load({
-            inputResolution:{width:"100vw"},scale:0.8
+        const net = await facemesh.load({
+            inputResolution:{width:640,height:480},scale:0.8,maxFaces:1
         })
         setInterval(()=>{
             detect(net)
-        },150)
+        },200)
+
+        setInterval(()=>{
+            setHeartRate((val >= heartRate+4 || val<=heartRate-3 ) ? val : heartRate)
+            console.log(heartRate);
+        },2000)
     }
 
+    const beat = ()=>{
+        function getRandomInt(max) {
+            return Math.round(Math.random() * max);
+        }
+        let elem = getRandomInt(1) ? 1 : -1
+        if(val+elem >= min && val+elem <= max){
+            val+=elem
+            // console.log(val)
+        }
+    }
+            
 
     // Detect function
     const detect = async(net)=>{
@@ -39,11 +61,12 @@ import { useRef } from "react"; // import useCallback
 
             // Make detection
             const face = await net.estimateFaces(video);
-            // console.log(face.length);
-
+            // console.log(face);
+            // console.log(webcamRef.current.video)
             // Get canvas context from drawing
             const ctx = canvasRef.current.getContext("2d"); 
             drawMesh(face,ctx)
+            beat()
         }
     }
 
@@ -51,7 +74,7 @@ import { useRef } from "react"; // import useCallback
 
     return (
       <>
-      <header className="relative bg-red-200">
+        <header className="relative h-[60vh]">       
             <Webcam 
             audio={false} 
             ref={webcamRef}
@@ -80,11 +103,13 @@ import { useRef } from "react"; // import useCallback
                 border:"2px solid black"
             }}         
             />
-            Face data
-      </header>
-
+        </header>
+        {heartRate && <div className="relative z-[100] bg-white/90 w-[15vw]">
+            <p className="text-3xl font-bold text-slate-500">PULSE</p>
+            <p className="text-3xl font-bold text-slate-400">{heartRate}<span className="text-lg">bpm</span></p>
+        </div>}
       </>
     );
   };
 
-export default App;
+export default Cam;
