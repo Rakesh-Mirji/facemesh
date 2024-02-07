@@ -2649,7 +2649,7 @@ export const TRIANGULATION = [
   
   getRandomInt(4)
 
-  let colorArr=[["white","aqua"],["#FDDB27FF","#00B1D2FF"],['#FFD662FF',"#00539CFF"],["#0063B2FF","#9CC3D5FF"]]
+  // let colorArr=[["white","aqua"],["#FDDB27FF","#00B1D2FF"],['#FFD662FF',"#00539CFF"],["#0063B2FF","#9CC3D5FF"]]
   // Triangle drawing method
   const drawPath = (ctx, points, closePath) => {
     const region = new Path2D();
@@ -2662,7 +2662,7 @@ export const TRIANGULATION = [
     if (closePath) {
       region.closePath();
     }
-    ctx.lineWidth = 0.2;
+    // ctx.lineWidth = 0.2;
     ctx.strokeStyle = "aqua";
     ctx.stroke(region);
   };
@@ -2691,7 +2691,7 @@ export const TRIANGULATION = [
           const y = keypoints[i][1];
   
           ctx.beginPath();
-          ctx.arc(x, y, 0.5 , 0, 3 * Math.PI);
+          ctx.arc(x, y, 1 , 0, 3 * Math.PI);
           ctx.fillStyle = "white";
           ctx.fill();
         }
