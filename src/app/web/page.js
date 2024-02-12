@@ -1,6 +1,6 @@
 "use client"
 import Webcam from "react-webcam";
-import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/facemesh";
 import { drawMesh } from "./utilities";
 
@@ -21,9 +21,14 @@ import { useRef,useState } from "react"; // import useCallback
         const net = await facemesh.load({
             inputResolution:{width:640,height:480},scale:0.8,maxFaces:1
         })
-        setInterval(()=>{
+        const pulse = setInterval(()=>{
             detect(net)
         },200)
+
+
+        setTimeout(()=>{
+            clearInterval(pulse);
+        },[20000])
     }
 
     const beat = ()=>{
@@ -62,7 +67,7 @@ import { useRef,useState } from "react"; // import useCallback
             // Get canvas context from drawing
             const ctx = canvasRef.current.getContext("2d"); 
             drawMesh(face,ctx)
-            beat()
+            face.length>0 ? beat() : setHeartRate(0)
         }
     }
 
